@@ -20,28 +20,51 @@ class LevelScreen : BaseScreen() {
     private lateinit var dialogBox: DialogBox
 
     override fun initialize() {
-        val ocean = BaseActor(0f, 0f, mainStage)
-        ocean.loadTexture("water-border.jpg")
-        ocean.setSize(1200f, 900f)
-        BaseActor.setWorldBounds(ocean)
+//        val ocean = BaseActor(0f, 0f, mainStage)
+//        ocean.loadTexture("water-border.jpg")
+//        ocean.setSize(1200f, 900f)
+//        BaseActor.setWorldBounds(ocean)
+//
+//        Starfish(400f, 400f, mainStage)
+//        Starfish(500f, 100f, mainStage)
+//        Starfish(100f, 450f, mainStage)
+//        Starfish(200f, 250f, mainStage)
+//
+//        Rock(200f, 150f, mainStage)
+//        Rock(100f, 300f, mainStage)
+//        Rock(300f, 350f, mainStage)
+//        Rock(450f, 200f, mainStage)
+//
+//        turtle = Turtle(20f ,20f, mainStage)
+//
+//        val sign1 = Sign(20f, 400f, mainStage)
+//        sign1.text = "West Starfish Bay"
+//
+//        val sign2 = Sign(600f, 300f, mainStage)
+//        sign2.text = "East Starfish Bay"
 
-        Starfish(400f, 400f, mainStage)
-        Starfish(500f, 100f, mainStage)
-        Starfish(100f, 450f, mainStage)
-        Starfish(200f, 250f, mainStage)
+        var tma = TilemapActor("map.tmx", mainStage)
 
-        Rock(200f, 150f, mainStage)
-        Rock(100f, 300f, mainStage)
-        Rock(300f, 350f, mainStage)
-        Rock(450f, 200f, mainStage)
+        for (obj in tma.getTileList("Starfish")) {
+            var props = obj.properties
+            Starfish(props.get("x") as Float, props.get("y") as Float, mainStage)
+        }
 
-        turtle = Turtle(20f ,20f, mainStage)
+        for (obj in tma.getTileList("Rock")) {
+            var props = obj.properties
+            Rock(props.get("x") as Float, props.get("y") as Float, mainStage)
+        }
 
-        val sign1 = Sign(20f, 400f, mainStage)
-        sign1.text = "West Starfish Bay"
+        for (obj in tma.getTileList("Sign")) {
+            var props = obj.properties
+            var s = Sign(props.get("x") as Float, props.get("y") as Float, mainStage)
+            s.text = props.get("message") as String
+        }
 
-        val sign2 = Sign(600f, 300f, mainStage)
-        sign2.text = "East Starfish Bay"
+        var startPoint = tma.getRectangleList("start").get(0)
+        var props = startPoint.properties
+
+        turtle = Turtle(props.get("x") as Float, props.get("y") as Float, mainStage)
 
         // user interface code
         starfishLabel = Label("Starfish Left:", BaseGame.labelStyle)
